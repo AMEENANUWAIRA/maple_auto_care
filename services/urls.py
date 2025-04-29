@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('services', views.displayServices, name="services"),
+    path('', views.displayServices, name="services"),
     path('get-service/<str:pk>/', views.getService, name="get-service"),
 
     # path('create-service', views.createService, name="create-service"),
