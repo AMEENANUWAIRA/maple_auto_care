@@ -1,0 +1,7 @@
+<h2>Cancel Your Booking</h2>
+<form method="post">
+    {% csrf_token %}
+    <label for="booking_id">Booking ID:</label>
+    <input type="text" name="booking_id" required>
+    <button type="submit">Cancel Booking</button>
+</form>
