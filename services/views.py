@@ -22,7 +22,7 @@ def getService(request, pk):
     service = Service.objects.get(name=pk)
 
     context = {"service": service}
-    return render(request, "services/service.html", context)
+    return render(request, "services/single-service.html", context)
 
 
 # def updateService(request):
