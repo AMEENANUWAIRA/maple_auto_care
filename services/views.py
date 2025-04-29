@@ -15,11 +15,11 @@ from .models import Service
 def displayServices(request):
     services = Service.objects.all()
     context = {"services": services}
-    return render(request, "main.html", context)
+    return render(request, "services/services.html", context)
 
 
 def getService(request, pk):
-    service = Service.objects.get(id=pk)
+    service = Service.objects.get(name=pk)
 
     context = {"service": service}
     return render(request, "services/service.html", context)
