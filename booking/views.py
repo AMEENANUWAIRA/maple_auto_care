@@ -20,7 +20,7 @@ def new_booking(request):
             # Prevent past date booking
             if booking.appointment_date < timezone.now().date():
                 messages.error(request, "You cannot book an appointment for a past date.")
-                return render(request, 'bookings/booking_form.html', {'form': form})
+                return render(request, 'booking_form.html', {'form': form})
 
             # Triple booking prevention
             existing_bookings = Booking.objects.filter(
@@ -29,15 +29,15 @@ def new_booking(request):
             )
             if existing_bookings.count() >= 2:
                 messages.error(request, "This slot already has 2 bookings. Please choose another slot.")
-                return render(request, 'bookings/booking_form.html', {'form': form})
+                return render(request, 'booking_form.html', {'form': form})
 
             # Validate contact info based on mode
             if booking.service_mode == 'email' and '@' not in booking.contact_info:
                 messages.error(request, "Please provide a valid email address.")
-                return render(request, 'bookings/booking_form.html', {'form': form})
+                return render(request, 'booking_form.html', {'form': form})
             elif booking.service_mode == 'whatsapp' and not booking.contact_info.isdigit():
                 messages.error(request, "Please provide a valid WhatsApp number.")
-                return render(request, 'bookings/booking_form.html', {'form': form})
+                return render(request, 'booking_form.html', {'form': form})
 
             # Calculate total price from selected services
             services = form.cleaned_data['services']
