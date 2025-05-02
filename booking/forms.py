@@ -14,19 +14,10 @@ class BookingForm(forms.ModelForm):
         }
 
         widgets = {
-            # 'appointment_date': forms.SelectDateWidget(),
             'appointment_date': forms.DateInput(attrs={'type': 'date'}),
             'appointment_slot': forms.Select(),
             'services': forms.CheckboxSelectMultiple(),
         }
-
-    # def __init__(self, *args, **kwargs):
-    #     super(BookingForm, self).__init__(*args, **kwargs)
-
-    #     for name, field in self.fields.items():
-    #         field.widget.attrs.update(
-    #             {'class': 'input'}
-    #         )
     
     def __init__(self, *args, **kwargs):
         super(BookingForm, self).__init__(*args, **kwargs)

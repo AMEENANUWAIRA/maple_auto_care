@@ -12,7 +12,7 @@
         <div class="layout">
           <div class="column">
             <div class="singleProject__info"><strong>Name:</strong> {{ booking.customer_name }}</div>
-            <div class="singleProject__info"><strong>Phone:</strong> {{ booking.phone }}</div>
+            <div class="singleProject__info"><strong>Phone:</strong> {{ booking.contact_info }}</div>
             <div class="singleProject__info"><strong>Email:</strong> {{ booking.email_info }}</div>
             <div class="singleProject__info"><strong>Appointment Date:</strong> {{ booking.appointment_date }}</div>
             <div class="singleProject__info"><strong>Appointment Slot:</strong> {{ booking.appointment_slot }}</div>
@@ -32,10 +32,9 @@
 
       <form method="POST">
         {% csrf_token %}
+        <a href="{% url 'new-booking' %}" class="btn btn--sub btn--lg my-md">Back to Booking</a>
         <button type="submit" class="btn btn--primary btn--lg my-md">Confirm Booking</button>
       </form>
-
-      <a href="{% url 'modify-booking' %}" class="btn btn--sub btn--lg my-md">Back to Booking</a>
     </div>
   </div>
 </main>

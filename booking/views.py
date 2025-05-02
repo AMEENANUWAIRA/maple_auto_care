@@ -10,7 +10,7 @@ from datetime import datetime
 
 
 def booking_home(request):
-    return render(request, 'booking_home.html')
+    return render(request, 'booking/booking_home.html')
 
 def new_booking(request):
     if request.method == 'POST':
@@ -47,7 +47,7 @@ def new_booking(request):
             messages.error(request, "Please correct the errors below.")
     else:
         form = BookingForm()
-    return render(request, 'booking_form.html', {'form': form})
+    return render(request, 'booking/booking_form.html', {'form': form})
 
 
 def confirmBooking(request):
@@ -85,7 +85,7 @@ def confirmBooking(request):
         'services': services,
         'total_price': total_price
     }
-    return render(request, 'confirm_booking.html', context)
+    return render(request, 'booking/confirm_booking.html', context)
 
 
 
@@ -105,7 +105,7 @@ def cancel_booking(request):
     else:
         form = DeleteBookingForm()
 
-    return render(request, 'cancel_booking.html', {'form': form})
+    return render(request, 'booking/cancel_booking.html', {'form': form})
 
 
 def modify_booking(request):
@@ -134,4 +134,4 @@ def modify_booking(request):
             except Booking.DoesNotExist:
                 messages.error(request, 'Booking not found.')
 
-    return render(request, 'modify_booking.html', {'form': form, 'booking': booking})
+    return render(request, 'booking/modify_booking.html', {'form': form, 'booking': booking})
