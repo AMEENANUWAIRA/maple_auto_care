@@ -28,29 +28,27 @@ def booking_confirmation_mail(sender, instance, created, **kwargs):
         Maple Auto Care Team
         """
 
-        if booking.service_mode == 'email':
-            send_mail(
-                subject=subject,
-                message=message,
-                from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[booking.contact_info],
-                fail_silently=False,
-            )
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[booking.email_info],
+            fail_silently=False,
+        )
 
-        elif booking.service_mode == 'whatsapp':
-            try:
-                phone = booking.contact_info.strip()
+        # try:
+        #     phone = booking.contact_info.strip()
 
-                # Ensure E.164 format
-                if not phone.startswith('+'):
-                    phone = '+91' + phone[-10:]
+        #     # Ensure E.164 format
+        #     if not phone.startswith('+'):
+        #         phone = '+91' + phone[-10:]
 
-                print(phone)
-                client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
-                whatsapp_message = client.messages.create(
-                    body=message,
-                    from_=settings.TWILIO_WHATSAPP_NUMBER,
-                    to=f"whatsapp:{phone}"
-                )
-            except Exception as e:
-                print(f"Error sending WhatsApp message: {e}")
+        #     print(phone)
+        #     client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+        #     whatsapp_message = client.messages.create(
+        #         body=message,
+        #         from_=settings.TWILIO_WHATSAPP_NUMBER,
+        #         to=f"whatsapp:{phone}"
+        #     )
+        # except Exception as e:
+        #     print(f"Error sending WhatsApp message: {e}")

@@ -13,18 +13,13 @@ class Booking(models.Model):
         ('16:00-17:00', '16:00-17:00'),
     ]
 
-    SERVICE_MODE_CHOICES = [
-        ('email', 'Email'),
-        ('whatsapp', 'WhatsApp'),
-    ]
-
     id = models.CharField(max_length=30, primary_key=True, editable=False)
 
     customer_name = models.CharField(max_length=100)
     appointment_date = models.DateField()
     appointment_slot = models.CharField(max_length=20, choices=SLOT_CHOICES)
     services = models.ManyToManyField(Service)
-    service_mode = models.CharField(max_length=10, choices=SERVICE_MODE_CHOICES)
+    email_info = models.EmailField()
     contact_info = models.CharField(max_length=100)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
 

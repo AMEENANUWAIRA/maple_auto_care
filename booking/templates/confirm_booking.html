@@ -1,39 +1,42 @@
 {% extends 'main.html' %}
-
 {% block content %}
 <main class="formPage my-xl">
-    <div class="content-box">
-        <div class="formWrapper">
-            <h2>Booking Confirmation</h2>
-            
-            <p>Thank you for choosing Maple Auto Care! <br><br>
-                Please confirm your booking details:</p>
-            <div class="container">
-                <div class="layout">
-                    <div class="column">
+  <div class="content-box">
+    <div class="formWrapper">
+      <h2>Booking Confirmation</h2>
 
-                        <div class="singleProject__info"><strong>Name:</strong> {{ booking.customer_name }}</div>
-                        <div class="singleProject__info"><strong>Appointment Date:</strong> {{ booking.appointment_date }}</div>
-                        <div class="singleProject__info"><strong>Appointment Slot:</strong> {{ booking.appointment_slot }}</div>
-                        
-                        <div class="singleProject__info"><strong>Services:</strong>
-                            <div style="margin-left: 2rem;">
-                                {% for service in booking.services.all %}
-                                    <p>{{ service.name }}</p>
-                                {% endfor %}
-                            </div>
-                        </div>
+      <p>Thank you for choosing Maple Auto Care!<br><br>
+         Please confirm your booking details:</p>
 
-                        <div class="singleProject__info"><strong>Service Mode:</strong> {{ booking.service_mode }}</div>
-                        <div class="singleProject__info"><strong>Contact Info:</strong> {{ booking.contact_info }}</div>
+      <div class="container">
+        <div class="layout">
+          <div class="column">
+            <div class="singleProject__info"><strong>Name:</strong> {{ booking.customer_name }}</div>
+            <div class="singleProject__info"><strong>Phone:</strong> {{ booking.phone }}</div>
+            <div class="singleProject__info"><strong>Email:</strong> {{ booking.email_info }}</div>
+            <div class="singleProject__info"><strong>Appointment Date:</strong> {{ booking.appointment_date }}</div>
+            <div class="singleProject__info"><strong>Appointment Slot:</strong> {{ booking.appointment_slot }}</div>
 
-                    </div>
-                </div>
+            <div class="singleProject__info"><strong>Services:</strong>
+              <ul style="margin-left: 2rem;">
+                {% for service in services %}
+                  <li>{{ service.name }} - {{ service.price }}</li>
+                {% endfor %}
+              </ul>
             </div>
-
-            <a href="{% url 'modify-booking' %}" class="btn btn--sub btn--lg my-md">Back to Booking</a>
-            <a href="{% url 'booking-home' %}" class="btn btn--sub btn--lg my-md">Book appointment</a>
+            <br>
+            <div class="singleProject__info"><strong>Total Price:</strong> ₹{{ total_price }}</div>
+          </div>
         </div>
+      </div>
+
+      <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn--primary btn--lg my-md">Confirm Booking</button>
+      </form>
+
+      <a href="{% url 'modify-booking' %}" class="btn btn--sub btn--lg my-md">Back to Booking</a>
     </div>
+  </div>
 </main>
 {% endblock %}

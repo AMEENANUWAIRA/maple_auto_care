@@ -6,7 +6,8 @@ from .forms import BookingForm, DeleteBookingForm
 from .models import Booking
 from services.models import Service
 from datetime import datetime, timedelta
-from django.db.models import Count
+from datetime import datetime
+
 
 def booking_home(request):
     return render(request, 'booking_home.html')
@@ -15,39 +16,33 @@ def new_booking(request):
     if request.method == 'POST':
         form = BookingForm(request.POST)
         if form.is_valid():
-            booking = form.save(commit=False)
+            # Validate date and slot logic
+            appointment_date = form.cleaned_data['appointment_date']
+            appointment_slot = form.cleaned_data['appointment_slot']
+            services = form.cleaned_data['services']
 
-            # Prevent past date booking
-            if booking.appointment_date < timezone.now().date():
+            if appointment_date < timezone.now().date():
                 messages.error(request, "You cannot book an appointment for a past date.")
                 return render(request, 'booking_form.html', {'form': form})
 
-            # Triple booking prevention
             existing_bookings = Booking.objects.filter(
-                appointment_date=booking.appointment_date,
-                appointment_slot=booking.appointment_slot
+                appointment_date=appointment_date,
+                appointment_slot=appointment_slot
             )
             if existing_bookings.count() >= 2:
                 messages.error(request, "This slot already has 2 bookings. Please choose another slot.")
                 return render(request, 'booking_form.html', {'form': form})
 
-            # Validate contact info based on mode
-            if booking.service_mode == 'email' and '@' not in booking.contact_info:
-                messages.error(request, "Please provide a valid email address.")
-                return render(request, 'booking_form.html', {'form': form})
-            elif booking.service_mode == 'whatsapp' and not booking.contact_info.isdigit():
-                messages.error(request, "Please provide a valid WhatsApp number.")
-                return render(request, 'booking_form.html', {'form': form})
-
-            # Calculate total price from selected services
-            services = form.cleaned_data['services']
-            total_price = sum(service.price for service in services)
-            booking.total_price = total_price
-            booking.save()
-            form.save_m2m()
-
-            request.session['booking_id'] = booking.id
-            return redirect('confirm-booking', pk=booking.id)
+            # Temporarily store form data in session
+            request.session['temp_booking_data'] = {
+                'customer_name': form.cleaned_data['customer_name'],
+                'contact_info': form.cleaned_data['contact_info'],
+                'email_info': form.cleaned_data['email_info'],
+                'appointment_date': str(appointment_date),
+                'appointment_slot': appointment_slot,
+                'services': [service.id for service in services]
+            }
+            return redirect('confirm-booking')
         else:
             messages.error(request, "Please correct the errors below.")
     else:
@@ -55,10 +50,43 @@ def new_booking(request):
     return render(request, 'booking_form.html', {'form': form})
 
 
-def confirmBooking(request, pk):
-    booking = Booking.objects.get(id=pk)
-    context = {'booking': booking}
-    return render(request, 'confirm_booking.html',context)
+def confirmBooking(request):
+    temp_data = request.session.get('temp_booking_data')
+
+    if not temp_data:
+        messages.error(request, "No booking data found.")
+        return redirect('new-booking')
+
+    # Get actual service objects from IDs stored in session
+    services = Service.objects.filter(id__in=temp_data['services'])
+    total_price = sum(service.price for service in services)
+
+    if request.method == 'POST':
+        # Create and save booking
+        appointment_date = datetime.strptime(temp_data['appointment_date'], '%Y-%m-%d').date()
+        booking = Booking.objects.create(
+            customer_name=temp_data['customer_name'],
+            contact_info=temp_data['contact_info'],
+            email_info=temp_data['email_info'],
+            appointment_date=appointment_date,
+            appointment_slot=temp_data['appointment_slot'],
+            total_price=total_price
+        )
+        booking.services.set(services)
+
+        # Clear session
+        request.session.pop('temp_booking_data', None)
+
+        messages.success(request, "Booking confirmed!")
+        return redirect('booking-home')
+
+    context = {
+        'booking': temp_data,
+        'services': services,
+        'total_price': total_price
+    }
+    return render(request, 'confirm_booking.html', context)
+
 
 
 def cancel_booking(request):
