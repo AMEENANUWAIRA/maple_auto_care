@@ -85,7 +85,7 @@ def modify_booking(request):
     form = None
 
     if request.method == 'POST':
-        if 'booking_id' in request.POST:  # Booking ID form was submitted
+        if 'booking_id' in request.POST: 
             booking_id = request.POST.get('booking_id')
             try:
                 booking = Booking.objects.get(id=booking_id)
@@ -94,7 +94,7 @@ def modify_booking(request):
                 messages.error(request, 'Booking not found.')
                 form = None
 
-        elif 'id' in request.POST:  # Booking update form was submitted
+        elif 'id' in request.POST:  
             booking_id = request.POST.get('id')
             try:
                 booking = Booking.objects.get(id=booking_id)
