@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib import messages
-from .forms import BookingForm
+from .forms import BookingForm, DeleteBookingForm
 from .models import Booking
 from services.models import Service
 from datetime import datetime, timedelta
@@ -47,36 +47,63 @@ def new_booking(request):
             form.save_m2m()
 
             request.session['booking_id'] = booking.id
-            return redirect(reverse('confirmation:confirm_booking'))
+            return redirect('confirm-booking', pk=booking.id)
         else:
             messages.error(request, "Please correct the errors below.")
     else:
         form = BookingForm()
     return render(request, 'booking_form.html', {'form': form})
 
-def modify_booking(request):
-    if request.method == 'POST':
-        booking_id = request.POST.get('booking_id')
-        booking = get_object_or_404(Booking, id=booking_id)
-        form = BookingForm(request.POST, instance=booking)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Booking updated successfully.")
-            return redirect(reverse('confirmation:confirm_booking'))
-    else:
-        booking_id = request.GET.get('booking_id')
-        booking = get_object_or_404(Booking, id=booking_id)
-        form = BookingForm(instance=booking)
-    return render(request, 'modify_booking.html', {'form': form})
+
+def confirmBooking(request, pk):
+    booking = Booking.objects.get(id=pk)
+    context = {'booking': booking}
+    return render(request, 'confirm_booking.html',context)
+
 
 def cancel_booking(request):
     if request.method == 'POST':
-        booking_id = request.POST.get('booking_id')
-        try:
-            booking = Booking.objects.get(id=booking_id)
-            booking.delete()
-            messages.success(request, "Booking cancelled successfully.")
-            return redirect('services:home')
-        except Booking.DoesNotExist:
-            messages.error(request, "Booking ID not found.")
-    return render(request, 'cancel_booking.html')
+        form = DeleteBookingForm(request.POST)
+        if form.is_valid():
+            booking_id = form.cleaned_data['booking_id'].strip().upper()
+            try:
+                booking = Booking.objects.get(id=booking_id)
+                booking.delete()
+                messages.success(request, f"Booking with ID '{booking_id}' has been cancelled successfully.")
+                return redirect('booking-home')
+
+            except Booking.DoesNotExist:
+                messages.error(request, f"No booking found with ID '{booking_id}'. Please check the ID and try again.")
+    else:
+        form = DeleteBookingForm()
+
+    return render(request, 'cancel_booking.html', {'form': form})
+
+
+def modify_booking(request):
+    booking = None
+    form = None
+
+    if request.method == 'POST':
+        if 'booking_id' in request.POST:  # Booking ID form was submitted
+            booking_id = request.POST.get('booking_id')
+            try:
+                booking = Booking.objects.get(id=booking_id)
+                form = BookingForm(instance=booking)
+            except Booking.DoesNotExist:
+                messages.error(request, 'Booking not found.')
+                form = None
+
+        elif 'id' in request.POST:  # Booking update form was submitted
+            booking_id = request.POST.get('id')
+            try:
+                booking = Booking.objects.get(id=booking_id)
+                form = BookingForm(request.POST, instance=booking)
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, 'Booking updated successfully.')
+                    return redirect('booking-home')
+            except Booking.DoesNotExist:
+                messages.error(request, 'Booking not found.')
+
+    return render(request, 'modify_booking.html', {'form': form, 'booking': booking})

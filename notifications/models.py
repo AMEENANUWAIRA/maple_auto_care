@@ -7,9 +7,13 @@ class Notification(models.Model):
         ('whatsapp', 'WhatsApp'),
     ]
 
-    booking = models.ForeignKey(Booking, on_delete=models.CASCADE, related_name='notifications')
+    booking = models.ForeignKey(Booking, on_delete=models.SET_NULL, related_name='notifications', null=True, blank=True)
     channel = models.CharField(max_length=10, choices=CHANNEL_CHOICES)
+    
+    email = models.EmailField(max_length=200, null=True, blank=True)
+    subject = models.CharField(max_length=200, null=True, blank=True)
     message = models.TextField()
+
     sent_at = models.DateTimeField(auto_now_add=True)
     success = models.BooleanField(default=False)
     error_message = models.TextField(blank=True, null=True)
