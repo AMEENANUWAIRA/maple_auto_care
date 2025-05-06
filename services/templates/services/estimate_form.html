@@ -1,0 +1,74 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<section id="estimate" class="estimate section light-background">
+
+  <!-- Section Title -->
+  <div class="container section-title text-center" data-aos="fade-up">
+    <h2>Price Estimation</h2>
+  </div>
+
+  <div class="container" data-aos="fade" data-aos-delay="100">
+    <div class="row gy-4 justify-content-center">
+      <div class="col-lg-8 mx-auto">
+        <form method="POST">
+          {% csrf_token %}
+          <div class="row gy-4">
+
+            <!-- Service selection -->
+            <div class="col-md-12">
+              <label for="services">Choose Services</label>
+              <select name="services" id="services" multiple class="form-control">
+                {% for service in services %}
+                  <option value="{{ service.id }}" data-price="{{ service.price }}">{{ service.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Estimated price display -->
+            <div class="col-md-12">
+              <label for="estimated_price">Estimated Price</label>
+              <input type="text" id="estimated_price" name="estimated_price"
+                     value="{{ estimated_price }}" readonly class="form-control" />
+            </div>
+
+            <!-- Action buttons -->
+            <div class="col-md-12 text-center">
+              <a class="btn btn-danger" href="https://www.aribooking.utilitymobileapps.com/index.html?FBProject=ARI&shopID=VvgGOWQIFtQm0yHR06giR3FKcbN2&version=v.14.2.6" target="_blank">Schedule Appointment</a>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- Include Select2 (optional, for better UI) -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const serviceSelect = document.getElementById('services');
+    const priceInput = document.getElementById('estimated_price');
+
+    // Optional: initialize Select2 for a better UI
+    if (window.jQuery) {
+      $('#services').select2();
+    }
+
+    function updatePrice() {
+      let total = 0;
+      for (let option of serviceSelect.selectedOptions) {
+        const price = parseFloat(option.getAttribute('data-price')) || 0;
+        total += price;
+      }
+      priceInput.value = total.toFixed(2);
+    }
+
+    serviceSelect.addEventListener('change', updatePrice);
+  });
+</script>
+{% endblock %}

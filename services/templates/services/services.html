@@ -1,46 +1,34 @@
 {% extends 'main.html' %}
 
 {% block content %}
-<main class="home">
-    <section class="hero-section text-center">
-      <div class="container container--narrow">
-        <div class="hero-section__box">
-          <h2>MAPLE AUTO CARE</h2>
-          <h2>RIGHT AT YOUR DOOR</h2>
-        </div>
+<!-- Services Section -->
+<section id="services" class="services section">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Services</h2>
+    <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+  </div><!-- End Section Title -->
 
-        <div class="hero-section__search">
-          <form id="searchForm" class="form" action="" method="get">
-            <div class="form__field">
-              <label for="formInput#search">Search Services </label>
-              <input class="input input--text" id="formInput#search" type="text" name="search_query" value="Search services"
-                placeholder="Search by developer name" />
-            </div>
+  <div class="container">
 
-            <input class="btn btn--sub btn--lg" type="submit" value="Search" />
-          </form>
-        </div>
-      </div>
-    </section>
-    <!-- Search Result: DevList -->
-    <section class="devlist">
-      <div class="container">
-        <div class="grid grid--three">
-        {% for service in services %}
-          <div class="column card">
-            <div class="dev">
-              <a href="{% url 'get-service' service.name %}" class="card__body">
-                <div class="dev__profile">
-                  <img class="avatar avatar--md" src="" alt="image" />
-                  <div class="dev__meta">
-                    <h3>{{ service.name }}</h3>
-                  </div>
-                </div>
-              </a>
-            </div>
+    <div class="row gy-4">
+    {% for service in services %}
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="service-item  position-relative">
+          <div class="icon">
+            <i class="bi bi-activity"></i>
           </div>
-        {% endfor %}
-      </div>
-    </section>
-  </main>
+          <a href="{% url 'get-service' service.name %}" class="stretched-link">
+            <h3>{{ service.name }}</h3>
+          </a>
+          <p class="text-black">{{ service.description }}</p>
+        </div>
+      </div><!-- End Service Item -->
+    {% endfor %}
+    </div>
+  </div>
+
+
+  </section><!-- /Services Section -->
 {% endblock %}

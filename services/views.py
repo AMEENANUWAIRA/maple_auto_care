@@ -11,7 +11,9 @@ from .models import Service
 #             service.save()
 #             return redirect('homepage')
 
-
+def home_view(request):
+    return render(request, 'services/home.html')
+    
 def displayServices(request):
     services = Service.objects.all()
     context = {"services": services}
@@ -20,10 +22,8 @@ def displayServices(request):
 
 def getService(request, pk):
     service = Service.objects.get(name=pk)
-
     context = {"service": service}
     return render(request, "services/single-service.html", context)
-
 
 # def updateService(request):
 #     form = ServiceForm()
@@ -47,3 +47,18 @@ def getService(request, pk):
 
 #     context = {'object': service}
 #     return render(request, 'delete_template.html', context)
+
+def calculate_estimate(request):
+    services = Service.objects.all()
+    estimated_price = 0.0
+
+    if request.method == 'POST':
+        selected_ids = request.POST.getlist('services')
+        selected_services = Service.objects.filter(id__in=selected_ids)
+        estimated_price = sum(service.price for service in selected_services)
+
+    context = {
+        'services': services,
+        'estimated_price': estimated_price,
+    }
+    return render(request, 'services/estimate_form.html', context)

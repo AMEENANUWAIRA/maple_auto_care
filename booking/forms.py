@@ -26,7 +26,7 @@ class BookingForm(forms.ModelForm):
         self.fields['appointment_date'].widget.attrs['min'] = date.today().isoformat()
 
         for name, field in self.fields.items():
-            field.widget.attrs.update({'class': 'input'})
+            field.widget.attrs.update()
 
     def clean_appointment_date(self):
         appointment_date = self.cleaned_data['appointment_date']
