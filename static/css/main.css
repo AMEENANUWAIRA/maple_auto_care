@@ -1141,6 +1141,13 @@ section,
   font-weight: 700;
 }
 
+.stats .stats-item #locations{
+  font-size: 25px;
+  display: block;
+  color: #7c847c;
+  font-weight: 700;
+}
+
 .stats .stats-item p {
   padding: 0;
   margin: 0;
