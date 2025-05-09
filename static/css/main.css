@@ -2440,3 +2440,78 @@ section,
   color: color-mix(in srgb, var(--default-color), transparent 60%);
   font-size: 14px;
 }
+
+
+/*--------------------------------------------------------------
+# Estimate Price Section
+--------------------------------------------------------------*/
+
+.estimate.section {
+  background-color: #121212; /* Dark background */
+  color: #f0f0f0;            /* Light text */
+}
+
+/* Form labels */
+.estimate.section label {
+  color: #f0f0f0;
+}
+
+/* Form controls (inputs, selects, etc.) */
+.estimate.section select,
+.estimate.section input,
+.estimate.section .form-control {
+  background-color: #1e1e1e;
+  color: #fff;
+  border-color: #444;
+}
+
+/* Custom selected services box */
+#selected-services {
+  background-color: #1e1e1e;
+  color: #fff;
+  border-color: #444;
+}
+
+/* Estimated price display */
+#estimated_price {
+  background-color: #1e1e1e;
+  color: #fff;
+  border-color: #444;
+}
+
+/* Button */
+.estimate.section .btn-danger {
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+
+.estimate.section .btn-danger:hover {
+  background-color: #c9302c;
+  border-color: #ac2925;
+}
+
+/* Hover effect */
+#selected-services hr {
+  border-top: 1px solid #666;
+}
+
+/* Choices.js dropdown styles */
+.choices__list--dropdown,
+.choices__list[aria-expanded],
+.choices__item,
+.choices__inner,
+.choices__input {
+  background-color: #1e1e1e !important;  /* Same dark background */
+  color: #fff !important;                 /* White text */
+  border-color: #444 !important;          /* Same border */
+}
+
+/* Dropdown item highlight */
+.choices__list--dropdown .choices__item--selectable.is-highlighted {
+  background-color: #333 !important;      /* Highlighted item */
+}
+
+/* Remove white background on search input focus */
+.choices__input {
+  background-color: #1e1e1e !important;
+}
