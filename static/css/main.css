@@ -570,7 +570,7 @@ h6 {
   font-weight: 700;
   position: relative;
   padding: 0;
-  margin: 0 0 15px 0;
+  margin: 0 0 4px 0;
 }
 
 .footer p {
@@ -784,7 +784,6 @@ section,
   display: block;
   width: 50px;
   height: 3px;
-  background: var(--accent-color);
   left: 0;
   right: 0;
   bottom: 0;
@@ -840,7 +839,8 @@ section,
 .hero p {
   color: color-mix(in srgb, var(--default-color), transparent 20%);
   margin: 10px 0 20px 0;
-  font-size: 24px;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 @media (max-width: 768px) {
@@ -861,6 +861,17 @@ section,
 .about ul {
   list-style: none;
   padding: 0;
+}
+
+.about p {
+  margin-bottom: 0;
+  color: color-mix(in srgb, var(--default-color), transparent 20%);
+  text-align: center;
+  font-size: large;
+}
+
+.about .subheading {
+  text-align: center;
 }
 
 .about ul li {
