@@ -21,16 +21,16 @@
 :root { 
   --background-color: #000000; /* Background color for the entire website, including individual sections */
   --default-color: #ffffff; /* Default color used for the majority of the text content across the entire website */
-  --heading-color: #FF0000; /* Color for headings, subheadings and title throughout the website */
-  --accent-color: #FF0000; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
-  --surface-color: #ffffff; /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
+  --heading-color: #b50000; /* Color for headings, subheadings and title throughout the website */
+  --accent-color: #b50000; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
+  --surface-color: rgba(220, 220, 220, 0.8); /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
   --contrast-color: #ffffff; /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
 }
 
 /* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
 :root {
   --nav-color: #ffffff;  /* The default color of the main navmenu links */
-  --nav-hover-color: #FF0000; /* Applied to main navmenu links when they are hovered over or active */
+  --nav-hover-color: #b50000; /* Applied to main navmenu links when they are hovered over or active */
   --nav-mobile-background-color: #ffffff; /* Used as the background color for mobile navigation menu */
   --nav-dropdown-background-color: #ffffff; /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
   --nav-dropdown-color: #444444; /* Used for navigation links of the dropdown items in the navigation menu. */
@@ -170,7 +170,7 @@ h6 {
 ------------------------------*/
 .php-email-form .error-message {
   display: none;
-  background: #df1529;
+  background: #b50000 ;
   color: #ffffff;
   text-align: left;
   padding: 15px;
@@ -238,7 +238,7 @@ h6 {
 }
 
 .header .logo img {
-  max-height: 36px;
+  max-height: 62px;
   margin-right: 8px;
 }
 
@@ -2439,4 +2439,79 @@ section,
   padding-left: 5px;
   color: color-mix(in srgb, var(--default-color), transparent 60%);
   font-size: 14px;
+}
+
+
+/*--------------------------------------------------------------
+# Estimate Price Section
+--------------------------------------------------------------*/
+
+.estimate.section {
+  background-color: #121212; /* Dark background */
+  color: #f0f0f0;            /* Light text */
+}
+
+/* Form labels */
+.estimate.section label {
+  color: #f0f0f0;
+}
+
+/* Form controls (inputs, selects, etc.) */
+.estimate.section select,
+.estimate.section input,
+.estimate.section .form-control {
+  background-color: #1e1e1e;
+  color: #fff;
+  border-color: #444;
+}
+
+/* Custom selected services box */
+#selected-services {
+  background-color: #1e1e1e;
+  color: #fff;
+  border-color: #444;
+}
+
+/* Estimated price display */
+#estimated_price {
+  background-color: #1e1e1e;
+  color: #fff;
+  border-color: #444;
+}
+
+/* Button */
+.estimate.section .btn-danger {
+  background-color: #b50000;
+  border-color: #b50000;
+}
+
+.estimate.section .btn-danger:hover {
+  background-color: #b50000;
+  border-color: #b50000;
+}
+
+/* Hover effect */
+#selected-services hr {
+  border-top: 1px solid #666;
+}
+
+/* Choices.js dropdown styles */
+.choices__list--dropdown,
+.choices__list[aria-expanded],
+.choices__item,
+.choices__inner,
+.choices__input {
+  background-color: #1e1e1e !important;  /* Same dark background */
+  color: #fff !important;                 /* White text */
+  border-color: #444 !important;          /* Same border */
+}
+
+/* Dropdown item highlight */
+.choices__list--dropdown .choices__item--selectable.is-highlighted {
+  background-color: #333 !important;      /* Highlighted item */
+}
+
+/* Remove white background on search input focus */
+.choices__input {
+  background-color: #1e1e1e !important;
 }
